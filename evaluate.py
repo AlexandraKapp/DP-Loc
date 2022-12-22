@@ -17,9 +17,9 @@ from utils import load_cfg, diff_coords
 import os
 
 #os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-cnf = load_cfg("cfg/cfg_general.json")
-cnf.CELL_SIZE = int(float(sys.argv[1]))
-cnf.__dict__.update(load_cfg(sys.argv[2]).__dict__)
+cnf = load_cfg("cfg/cfg_general_Simra.json")
+# cnf.CELL_SIZE = int(float(sys.argv[1]))
+# cnf.__dict__.update(load_cfg(sys.argv[2]).__dict__)
 MCMC = int(sys.argv[3])
 
 print("------------------------ EVALUATION WITH MCMC ITERS ", MCMC, "--------------------------------------------------")

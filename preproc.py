@@ -12,7 +12,7 @@ import statistics as st
 
 import utils
 
-cnf = utils.load_cfg("cfg/cfg_general.json")
+cnf = utils.load_cfg("cfg/cfg_general_Simra.json")
 
 # compute distance between cells (for error calculation)
 def to_mapped_coord(x):
@@ -132,7 +132,7 @@ class Preprocessing:
             cnt.update(x[0] for x in line)
         print("count singles: ", count_singles)
         # save location frequencies for plotting
-        with open(cnf.LOCATION_FREQUENCY_FILE % cnf.TAXI_NUM, "wb") as f:
+        with open(cnf.LOCATION_FREQUENCY_FILE, "wb") as f:
             pickle.dump(cnt.most_common(), f)
         
         # tokenization
@@ -167,6 +167,9 @@ class Preprocessing:
             nearest_in_top_k = self.map_to_top_k(all_words, used_words)
         else:
             used_words = all_words
+        # needed for converting output traces back to geo locations
+        pickle.dump(used_words, open(f"output/simra/used_words_{cnf.CELL_SIZE}_eps{cnf.EPS}.pickle", "wb"))
+
         self.cell2token = dict(zip(used_words, range(1, len(used_words) + 1)))
         assert 0 not in self.cell2token, "0 is reserved for padding!"
         # For padding
@@ -245,7 +248,7 @@ class Preprocessing:
             # predictor: time (used_id is just for sampling, it will be removed) label: (src, dst)
             init_data.append([self.cell2token[line[0][0]], self.cell2token[line[0][1]], line[0][2], user_id])
 
-            if thres is not None:
+            if (thres is not None) and (len(tokenized_list) > thres):
                 tokenized_list = tokenized_list[:thres]
             # Remove the last location (test)
             # tokenized_list = tokenized_list[:-1]

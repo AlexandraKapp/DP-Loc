@@ -21,9 +21,9 @@ import os
 
 np.set_printoptions(threshold=np.inf)
 
-cnf = load_cfg("cfg/cfg_general.json")
-cnf.CELL_SIZE = int(float(sys.argv[2]))
-cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
+cnf = load_cfg("cfg/cfg_general_Simra.json")
+#cnf.CELL_SIZE = int(float(sys.argv[2]))
+#cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
 
 preproc = Preprocessing(cnf.CELL_SIZE, cnf.EPS)
 #preproc.top_k_size = 234
@@ -64,7 +64,7 @@ def process(args):
         nodes = preproc.cell2token.values()
 
         inp = np.float32([[[node, dst, slot] for node in nodes]])
-        inp = inp.reshape(len(inp[0], 1, 3))
+        inp = inp.reshape(len(inp[0]), 1, 3)
         outputs = tf.nn.softmax(model(inp)).numpy()
 
         for i, node in enumerate(nodes):
@@ -108,7 +108,12 @@ def process(args):
     count2s = 0
     print("traces")
     counting = 0
+    counter = 0
     for key_dt in data:
+        counter +=1
+        if counter % 100 == 0:
+            print(f"generated traces for {counter} destinations")
+
         dst = key_dt[0]
         ts = key_dt[1]
         G = build_graph(dst=dst, slot=ts)
@@ -157,7 +162,7 @@ def process(args):
     
                                 traces0.append([dst, ts, loop_trace])
                         else:
-                            for MCMC in range(1, 11):
+                            for MCMC in range(1,150+1):
                                 if reject == 1:
                                     reject = 0
                                     trace = old_trace
@@ -301,17 +306,17 @@ if __name__ == '__main__':
         listsdt = []
         for i in range(0, cnf.CPU_CORES):
             listsdt.append({})
-        for i, (src, dest, time) in enumerate(data):
-            if (dest, time) in listsdt[i % cnf.CPU_CORES]:
-                listsdt[i % cnf.CPU_CORES][(dest, time)].append(src)
+        for i, (src, dest, ts) in enumerate(data):
+            if (dest, ts) in listsdt[i % cnf.CPU_CORES]:
+                listsdt[i % cnf.CPU_CORES][(dest, ts)].append(src)
             else:
-                listsdt[i % cnf.CPU_CORES][(dest, time)] = []
-                listsdt[i % cnf.CPU_CORES][(dest, time)].append(src)
+                listsdt[i % cnf.CPU_CORES][(dest, ts)] = []
+                listsdt[i % cnf.CPU_CORES][(dest, ts)].append(src)
 
         data_chunks = [(i + 1, cnf.CPU_CORES, listsdt[i]) for i in range(len(listsdt))]
 
         traces = pool.map(process, data_chunks)
-        pickle.dump(traces, open("traces.pickle", "wb"))
+        pickle.dump(traces, open("output/traces.pickle", "wb"))
 
         mcmcs = [0, 1, 5, 10, 25, 50, 100, 150]
         for MCMC in mcmcs:

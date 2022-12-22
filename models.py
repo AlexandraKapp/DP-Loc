@@ -3,7 +3,7 @@ from silence_tensorflow import silence_tensorflow
 silence_tensorflow()
 from utils import *
 
-cnf = load_cfg("cfg/cfg_general.json")
+cnf = load_cfg("cfg/cfg_general_Simra.json")
 
 
 def create_model_nh_lstm(max_words_num, out_size):
