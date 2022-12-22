@@ -27,9 +27,9 @@ from train_step import *
 from utils import *
 from silence_tensorflow import silence_tensorflow
 silence_tensorflow()
-cnf = load_cfg("cfg/cfg_general.json")
-cnf.CELL_SIZE = int(float(sys.argv[2]))
-cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
+cnf = load_cfg("cfg/cfg_general_Simra.json")
+#cnf.CELL_SIZE = int(float(sys.argv[2]))
+#cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
 
 # tf.disable_v2_behavior()
 # disable_eager_execution()
@@ -106,10 +106,13 @@ def train_init(model, train_data, sample_locs, batch_size, epochs):
         #progbar = tf.keras.utils.Progbar(batch_num)
         # x=y now (generative model)
         for eps_value, (x, y) in priv_acc.make_iter(batch_generator(train_data, train_data, batch_size, sample_locs)):
-            loss_values, norm_values = train_step_DP(model, compute_vae_loss, optimizer_init, x, y,
-                                                     tf.constant(cnf.L2_NORM_CLIP_VAE, dtype=tf.float32),
-                                                     tf.constant(cnf.SIGMA_VAE, dtype=tf.float32))
-
+            if cnf.EPS != "None":
+                loss_values, norm_values = train_step_DP(model, compute_vae_loss, optimizer_init, x, y,
+                                                        tf.constant(cnf.L2_NORM_CLIP_VAE, dtype=tf.float32),
+                                                        tf.constant(cnf.SIGMA_VAE, dtype=tf.float32))
+            elif cnf.EPS == "None":
+                # NODP training
+                loss_values, norm_values = train_step_NODP(model, compute_vae_loss, optimizer_init, x, y)
             # Track progress
             loss_value = tf.reduce_mean(input_tensor=loss_values)
             norm_value = tf.reduce_mean(input_tensor=norm_values)
@@ -192,10 +195,16 @@ def train_nh(model, train_data, train_labels, test_data, test_labels, sample_loc
         for eps_value, (x, y) in priv_acc.make_iter(batch_generator(train_data, train_labels, batch_size, sample_locs)):
             iters += 1
 
-            loss_values, norm_values = train_step_DP(model, compute_nh_loss, optimizer_nh, x, y,
-                                                     tf.constant(cnf.L2_NORM_CLIP_NH, dtype=tf.float32),
-                                                     tf.constant(cnf.SIGMA_NH, dtype=tf.float32))
+            if cnf.EPS != "None":
+                loss_values, norm_values = train_step_DP(model, compute_nh_loss, optimizer_nh, x, y,
+                                                        tf.constant(cnf.L2_NORM_CLIP_NH, dtype=tf.float32),
+                                                        tf.constant(cnf.SIGMA_NH, dtype=tf.float32))
 
+
+            elif cnf.EPS == "None":
+                # NODP training
+                loss_values, norm_values = train_step_NODP(model, compute_nh_loss, optimizer_nh, x, y)
+          
             # Track progress
             y_pred = tf.argmax(model(x, training=True), axis=1, output_type=tf.int32)
 

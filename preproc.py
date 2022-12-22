@@ -27,12 +27,13 @@ def cell_dist(projector, c1, c2):
     return int(1000 * utils.haversine(projector.toGPS((x1, y1)), projector.toGPS((x2, y2))))
 
 
-def add_noise_to_hist(hist, scale):
+def add_noise_to_hist(hist, scale, with_dp):
     """Add Gaussian noise to all bins in histogram. Return bins in decreasing order."""
     ids = np.array([x[0] for x in hist])
     counts = np.array([x[1] for x in hist], dtype="f")
-    np.random.seed(42)
-    counts += np.random.normal(scale=scale, size=len(hist))
+    if with_dp:
+        np.random.seed(42)
+        counts += np.random.normal(scale=scale, size=len(hist))
     return ids[counts.argsort()[::-1]]
 
 
@@ -136,7 +137,8 @@ class Preprocessing:
             pickle.dump(cnt.most_common(), f)
         
         # tokenization
-        all_words = add_noise_to_hist(cnt.most_common(), sigma * thres)
+        all_words = add_noise_to_hist(cnt.most_common(), sigma * thres, (cnf.EPS != "None"))
+        
         if cnf.PREPROC_MAP_TO_TOP_K:
             #print("topk set after gauss: ",used_words)
             #usedset=set(used_words)
