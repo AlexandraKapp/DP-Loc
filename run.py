@@ -33,14 +33,14 @@ if __name__ == "__main__":
     print("STARTING TIME: ", time_string)
 
     # # Step 1: Map taxi GPS data to a grid
-    # if os.system("python create_mapped_data_Simra.py %f" % cnf.CELL_SIZE):
-    #     sys.exit(1)
+    if os.system("python create_mapped_data_Simra.py %f" % cnf.CELL_SIZE):
+        sys.exit(1)
 
-    #print("=================================================================== EPS = ? ==================================================================")
-    run_sim("cfg/cfg_general_Simra.json", cell_size=cnf.CELL_SIZE)
+    #print("=================================================================== EPS = None ==================================================================")
+    run_sim("cfg/cfg_epsNone.json", cell_size=cnf.CELL_SIZE)
 
     #print("=================================================================== EPS = 5 ==================================================================")
-    #run_sim("cfg/cfg_eps5.json", cell_size=cell_size)
+    run_sim("cfg/cfg_eps5.json", cell_size=cnf.CELL_SIZE)
     
     named_tuple = time.localtime() # get struct_time
     time_string = time.strftime("%m/%d/%Y, %H:%M:%S", named_tuple)

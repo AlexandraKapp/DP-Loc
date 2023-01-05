@@ -23,7 +23,7 @@ np.set_printoptions(threshold=np.inf)
 
 cnf = load_cfg("cfg/cfg_general_Simra.json")
 #cnf.CELL_SIZE = int(float(sys.argv[2]))
-#cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
+cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
 
 preproc = Preprocessing(cnf.CELL_SIZE, cnf.EPS)
 #preproc.top_k_size = 234
@@ -107,6 +107,7 @@ def process(args):
     traces150 = []
     count2s = 0
     print("traces")
+    print(f"All destinations: {len(data)}")
     counting = 0
     counter = 0
     for key_dt in data:

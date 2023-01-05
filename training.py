@@ -29,7 +29,7 @@ from silence_tensorflow import silence_tensorflow
 silence_tensorflow()
 cnf = load_cfg("cfg/cfg_general_Simra.json")
 #cnf.CELL_SIZE = int(float(sys.argv[2]))
-#cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
+cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)
 
 # tf.disable_v2_behavior()
 # disable_eager_execution()

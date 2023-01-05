@@ -1,11 +1,4 @@
 {
-  "EPS":"None",
-  "LEARNING_RATE_NH_DP": 0.10,
-  "LEARNING_RATE_VAE_DP": 0.20,
-  "SIGMA_NH": 1.7,
-  "SIGMA_VAE": 1.9,
-  "SIGMA_TK": 4.4,
-  
   "CELL_SIZE": 500,
 
   "MIN_X": 13.281,
@@ -20,8 +13,6 @@
   
   "THRESHOLD_PERCENTAGE": 0.95,
   
-  "sys_arg_1": "TRACES",
-
   "OUT_DIR": "output/simra/",
   "ORIG_INIT_DATA_FILE": "output/simra/orig_init_data-cell_%d.pickle",
   "ORIG_TRACES_FILE": "output/simra/original_traces-cell_%d.pickle",
