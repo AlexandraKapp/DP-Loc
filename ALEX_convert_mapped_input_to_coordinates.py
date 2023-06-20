@@ -8,6 +8,10 @@ from tables import *
 from utils import *
 cnf = load_cfg("cfg/cfg_general_Simra.json")
 
+INPUT_PATH = "datasets/simra/mapped_data-304.h5"
+OUTPUT_PATH = "/Users/alexandra/Documents/GitHub/synth_data_evaluation/data/synthetic/dploc/input_reversed_cell_500.csv"
+GRID_OUTPUT_PATH = "/Users/alexandra/Documents/GitHub/synth_data_evaluation/data/synthetic/dploc/grid_coords_cell_500.csv"
+
 # create a projector class, as in the algorithm
 projector = Projector(cnf.MIN_X, cnf.MIN_Y, cnf.MAX_X, cnf.MAX_Y)
 
@@ -19,7 +23,7 @@ cells = [(x, y) for x in range(MAP_HEIGHT + 1) for y in range(MAP_WIDTH + 1)]
 cell2id = dict(zip(cells, range(1, len(cells) + 1)))
 id2cell = dict(zip(range(1, len(cells) + 1), cells))
 
-h5file = open_file("datasets/simra/mapped_data-304.h5", mode="r")
+h5file = open_file(INPUT_PATH, mode="r")
 input_traces = h5file.root.Traces
 
 ids_input = []
@@ -30,7 +34,7 @@ for i in range(0, len(input_traces)-1):
 grid_ids_input = pd.Series(ids_input)
 
 # grid input to coordinates
-with open("/data/input_reversed.csv", 'w') as csvfile: 
+with open(OUTPUT_PATH, 'w') as csvfile: 
     write = csv.writer(csvfile) 
     write.writerow(["tid", "lng", "lat"])
     for i in range(0, len(input_traces)-1):
@@ -49,7 +53,7 @@ all_coords_input = [(x*cnf.CELL_SIZE, y*cnf.CELL_SIZE) for x,y in cell2id.keys()
 all_coords = list(projector.toGPS_list(all_coords_input))
 
 import csv
-with open("/data/grid_coords.csv", 'w') as csvfile: 
+with open(GRID_OUTPUT_PATH, 'w') as csvfile: 
     write = csv.writer(csvfile) 
     write.writerow(["lng", "lat"])
     for coords in all_coords:

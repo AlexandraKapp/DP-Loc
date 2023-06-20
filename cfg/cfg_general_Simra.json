@@ -1,5 +1,5 @@
 {
-  "CELL_SIZE": 500,
+  "CELL_SIZE": 820,
 
   "MIN_X": 13.281,
   "MIN_Y": 52.459,
@@ -22,7 +22,7 @@
   "GENERATED_TRACES_FILE": "output/simra/generated_traces-cell_%d-eps_%s_%d.pickle",
   "GENERATED_TRACES_NOLOOP_FILE": "output/simra/generated_traces_noloop-cell%d-eps_%s.pickle",
   "RESULTS_FILE": "outpu/simra/results-cell_%d-eps_%s.pickle",
-  "INPUT_DIR": "data/simra.csv",
+  "INPUT_DIR": "/Users/alexandra/Documents/data/simra/simra_trajectories_boundary.csv",
   "MAPPED_OUTPUT_DATA_FILE": "datasets/simra/mapped_data-%d.h5",
   "LOCATION_FREQUENCY_FILE": "datasets/simra/location_frequency.pickle",
   "TOPK_THRES_FILE": "output/simra/topk_threshold_cell_%d-eps_%s.pickle",
@@ -32,6 +32,7 @@
   "ORIG_FOR_ADA": "output/simra/orig_for_adatrace-cell_%d.dat",
   "PATH_VAE": "Gsaved_model/simra/vae-%d-%s",
   "PATH_NH": "Gsaved_model/simra/nh-%d-%s",
+  "USED_WORDS_PATH": "output/simra/used_words_%d_eps%s.pickle",
 
   "L2_NORM_CLIP_NH": 3.0,
   "L2_NORM_CLIP_VAE": 1.0,

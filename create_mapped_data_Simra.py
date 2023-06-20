@@ -9,7 +9,8 @@ from tables import *
 
 from utils import *
 
-cnf = load_cfg("cfg/cfg_general_Simra.json")
+cnf = load_cfg("cfg/cfg_general_Tapas.json")
+#cnf = load_cfg("cfg/cfg_general_Simra.json")
 #cnf.CELL_SIZE = int(float(sys.argv[1]))
 
 # for aggregation by time (returns consecutive slots with identical timestamps)
@@ -56,7 +57,12 @@ def get_flagged_points_trim_gps(visits):
         if old_tid is None:
             old_tid = tid
         
-        timestamp = int(visit[6]) / 1000
+        # skip if no timestamp
+        try:
+            timestamp = int(visit[6]) / 1000
+        except:
+            print(visit)
+            continue
         
         if cnf.MIN_X <= lon <= cnf.MAX_X and cnf.MIN_Y <= lat <= cnf.MAX_Y:
             if (old_tid == tid):

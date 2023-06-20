@@ -13,6 +13,8 @@ import statistics as st
 import utils
 
 cnf = utils.load_cfg("cfg/cfg_general_Simra.json")
+#cnf = utils.load_cfg("cfg/cfg_general_Tapas.json")
+#cnf = utils.load_cfg("cfg/cfg_general_porto.json")
 
 # compute distance between cells (for error calculation)
 def to_mapped_coord(x):
@@ -170,7 +172,7 @@ class Preprocessing:
         else:
             used_words = all_words
         # needed for converting output traces back to geo locations
-        pickle.dump(used_words, open(f"output/simra/used_words_{cnf.CELL_SIZE}_eps{cnf.EPS}.pickle", "wb"))
+        pickle.dump(used_words, open(cnf.USED_WORDS_PATH % (cnf.CELL_SIZE, cnf.EPS), "wb"))
 
         self.cell2token = dict(zip(used_words, range(1, len(used_words) + 1)))
         assert 0 not in self.cell2token, "0 is reserved for padding!"
@@ -250,7 +252,8 @@ class Preprocessing:
             # predictor: time (used_id is just for sampling, it will be removed) label: (src, dst)
             init_data.append([self.cell2token[line[0][0]], self.cell2token[line[0][1]], line[0][2], user_id])
 
-            if (thres is not None) and (len(tokenized_list) > thres):
+            #if (thres is not None) and (len(tokenized_list) > thres):
+            if (thres is not None):
                 tokenized_list = tokenized_list[:thres]
             # Remove the last location (test)
             # tokenized_list = tokenized_list[:-1]

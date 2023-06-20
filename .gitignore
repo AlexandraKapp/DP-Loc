@@ -4,6 +4,8 @@ Gsaved_model/*
 Output/*
 .vscode/*
 traces.pickle
+Psaved_model/*
+Pout/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

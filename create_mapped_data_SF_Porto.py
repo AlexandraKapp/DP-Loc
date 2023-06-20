@@ -9,8 +9,9 @@ from tables import *
 
 from utils import *
 
-cnf = load_cfg("cfg/cfg_general.json")
-cnf.CELL_SIZE = int(float(sys.argv[1]))
+#cnf = load_cfg("cfg/cfg_general.json")
+cnf = load_cfg("cfg/cfg_general_porto.json")
+#cnf.CELL_SIZE = int(float(sys.argv[1]))
 
 
 # for aggregation by time (returns consecutive slots with identical timestamps)

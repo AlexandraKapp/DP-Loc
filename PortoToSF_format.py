@@ -4,7 +4,7 @@ import re
 
 min_lat, max_lat = 90, -90
 min_lon, max_lon = 180, -180
-file = open('datasets/Porto/raw.csv', 'r')
+file = open('/Users/alexandra/Documents/data/porto_taxi/train.csv', 'r')
 new_file = open('datasets/Porto/Porto_preprocessed.txt', 'w+')
 file.readline()
 c = 0

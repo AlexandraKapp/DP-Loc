@@ -6,14 +6,26 @@ import csv
 # I added the following line to the preproc.py file in line 170:
 # pickle.dump(used_words, open(f"output/simra/used_words_{cnf.CELL_SIZE}_eps{cnf.EPS}.pickle", "wb"))
 
-USED_WORDS_PATH = "output/simra/used_words_500_eps100000.pickle"
-TRACES_PATH = "output/simra/generated_traces-cell_500-eps_100000.00_5.pickle"
-OUTPUT_CSV_PATH = "test_output_alg.csv"
+CELL_SIZE = 820
+MCMC = 100
+EPS = 2.0
+iteration = 0
+#USED_WORDS_PATH = f"/Users/alexandra/Documents/GitHub/DP-Loc/Pout/used_words_{CELL_SIZE}_eps{EPS}.pickle"
+USED_WORDS_PATH = f"/Users/alexandra/Documents/GitHub/DP-Loc/output/simra/used_words_{CELL_SIZE}_eps{EPS}.pickle"
+#TRACES_PATH = f"/Users/alexandra/Documents/GitHub/DP-Loc/Pout/generated_traces-cell_820-eps__mh100.pickle"
+TRACES_PATH = f"/Users/alexandra/Documents/GitHub/DP-Loc/output/simra/generated_traces-cell_{CELL_SIZE}-eps_{EPS}_{MCMC}.pickle"
+OUTPUT_CSV_PATH = f"/Users/alexandra/Documents/GitHub/synth_data_evaluation/data/synthetic/dploc/simra_output_cell{CELL_SIZE}_eps{EPS}_mcmc_{MCMC}_iter{iteration}.csv"
+#USED_WORDS_PATH = f"/Users/alexandra/Documents/GitHub/DP-Loc/output/Geolife/no_dp/used_words_{CELL_SIZE}_eps{EPS}.pickle"
+#TRACES_PATH = f"/Users/alexandra/Documents/GitHub/DP-Loc/output/Geolife/no_dp/generated_traces-cell_{CELL_SIZE}-eps_{EPS}_{MCMC}.pickle"
+#OUTPUT_CSV_PATH = f"/Users/alexandra/Documents/GitHub/DP-Loc/output/Geolife/no_dp/geolife_output_cell{CELL_SIZE}_no_dp_mcmc_{MCMC}.csv"
 
 
 # this needs to be run in the DP-Loc folder, otherwise these imports don't work
 from utils import *
+#cnf = load_cfg("cfg/cfg_general_porto.json")
+#cnf = load_cfg("cfg/cfg_general_Tapas.json")
 cnf = load_cfg("cfg/cfg_general_Simra.json")
+#cnf = load_cfg("cfg/cfg_general_Geo.json")
 
 # create a projector class, as in the algorithm
 projector = Projector(cnf.MIN_X, cnf.MIN_Y, cnf.MAX_X, cnf.MAX_Y)
@@ -34,7 +46,7 @@ token2cell = {v: k for k, v in cell2token.items()}
 
 # get the generated traces
 traces = pickle.load(open(TRACES_PATH, "rb"))
-seq = np.array(traces)[:,2]
+seq = np.array(traces, dtype=object)[:,2]
 
 # write these as readable and mapped csv file
 with open(OUTPUT_CSV_PATH, 'w') as csvfile: 

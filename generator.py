@@ -21,6 +21,8 @@ import os
 
 np.set_printoptions(threshold=np.inf)
 
+#cnf = load_cfg("cfg/cfg_general_porto.json")
+#cnf = load_cfg("cfg/cfg_general_Tapas.json")
 cnf = load_cfg("cfg/cfg_general_Simra.json")
 #cnf.CELL_SIZE = int(float(sys.argv[2]))
 cnf.__dict__.update(load_cfg(sys.argv[3]).__dict__)

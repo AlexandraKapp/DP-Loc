@@ -3,6 +3,9 @@ from silence_tensorflow import silence_tensorflow
 silence_tensorflow()
 from utils import *
 
+
+#cnf = load_cfg("cfg/cfg_general_porto.json")
+#cnf = load_cfg("cfg/cfg_general_Tapas.json")
 cnf = load_cfg("cfg/cfg_general_Simra.json")
 
 
